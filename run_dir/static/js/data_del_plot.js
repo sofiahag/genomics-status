@@ -76,7 +76,7 @@ function make_plot(key, name, view_type, filter_inst_type){
             enabled : false
         },
         xAxis: {
-            type: 'datetime',
+            type: 'category',
             title : {
               text : 'Close Date'
             },
@@ -135,17 +135,17 @@ function build_series(data, key, name, view_type, filter_inst_type){
             }
             view_color = view_coloring(series_name);
         }else if (view_type == 'application'){
-            if (data[d].app.includes('RNA')){
+            if (data[d].application.includes('RNA')){
                 series_name = "RNA-Seq";
-            }else if (data[d].app.includes('WG')){
+            }else if (data[d].application.includes('WG')){
                 series_name = "WG-reseq";
-            }else if (data[d].app.includes('Target')){
+            }else if (data[d].application.includes('Target')){
                 series_name = "Target-reseq";
-            }else if (data[d].app.includes('Metagenomics')){
+            }else if (data[d].application.includes('Metagenomics')){
                 series_name = "Metagenomics";
-            }else if (data[d].app.includes('novo')){
+            }else if (data[d].application.includes('novo')){
                 series_name = "de novo";
-            }else if (data[d].app.includes('Epigenetics')){
+            }else if (data[d].application.includes('Epigenetics')){
                 series_name = "Epigenetics";
             }else{
                 series_name = "Other/undefined";
@@ -200,19 +200,19 @@ function build_series(data, key, name, view_type, filter_inst_type){
                 data: [],
             };
             series.length += 1;
-        }else{
-            dp = {
-                y: data[d][key],
-                name: project_name + ': ' + "<i>" + date_close + "</i>",
-                ownURL: bioinfo_link
-            };
-            series[series_name].data.push(dp);
-            categories.push(date_close);
-      }
-      var proper_series = []
-      for (s in series) {
-          proper_series.push(series[s]);
-      }
+        }
+        dp = {
+            y: data[d][key],
+            name: date_close,
+            ownURL: bioinfo_link
+        };
+        series[series_name].data.push(dp);
+        categories.push(date_close);
+        // Hackery to get a proper JS array for HCharts
+        var proper_series = []
+        for (s in series) {
+            proper_series.push(series[s]);
+        }
     }
   return [categories, proper_series];
 }
@@ -303,7 +303,6 @@ function get_parameters(){
     });
 
     var types = [key, name, view_type, search_string, inst_type_filter];
-    console.log(types)
     return types;
  }
 
