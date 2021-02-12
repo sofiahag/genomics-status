@@ -22,6 +22,7 @@ class DataDeliveryHandler(SafeHandler):
         docs = staged_files_sum_view.rows
         # Projects without close date are filtered out
         data = [d.value for d in docs if start_date <= d.value.get('close_date', 'ZZZZ-ZZ-ZZ') < end_date]
+        data = sorted(data, key=lambda d: d['close_date'])
 
         self.set_header('Content-type', "application/json")
         self.write(json.dumps(data))
