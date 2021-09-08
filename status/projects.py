@@ -1060,11 +1060,10 @@ class PrioProjectsTableHandler(SafeHandler):
         from collections.abc import Iterable
         def flatten(l):
             for el in l:
-                if isinstance(el, Iterable) and not isinstance(el, (str, bytes)):
+                if isinstance(el, Iterable) and not isinstance(el, str):
                     yield from flatten(el)
                 else:
                     yield el
-        self.set_header("Content-type", "application/json")
         projects = {}
         def_dates_rec_ctrl = { 'days_recep_ctrl' : ['open_date', 'queued']
                              }
@@ -1085,19 +1084,16 @@ class PrioProjectsTableHandler(SafeHandler):
         for status in statuses:
             view_calls.append(view[[status, 'Z']:[status, '']])
         for row in itertools.chain.from_iterable(view_calls):
-            is_ongoing = False
-            if row.key[0] == 'ongoing':
-                is_ongoing = True
             proj_id = row.key[1]
             proj_val = row.value
             for date_type, date in proj_val['summary_dates'].items():
                 proj_val[date_type] = date
-            if is_ongoing:
+            if row.key[0] == 'ongoing':
                 for k, v in proj_val['project_summary'].items():
                     proj_val[k] = v
 
             is_fin_lib = False
-            if 'Library, By user' in proj_val.get('library_construction_method', '-'):
+            if 'by user' in proj_val.get('library_construction_method', '-').lower():
                 is_fin_lib = True
 
             for key, value in def_dates_rec_ctrl.items():
@@ -1107,7 +1103,7 @@ class PrioProjectsTableHandler(SafeHandler):
                                                                proj_val.get(end_date))
                 projects[proj_id] = { key: date_val }
 
-            if is_ongoing:
+            if row.key[0] == 'ongoing':
                 for key, value in def_dates_ongoing.items():
                     if key == 'days_seq_start':
                         if is_fin_lib:
@@ -1142,6 +1138,7 @@ class PrioProjectsTableHandler(SafeHandler):
         for key in list(def_dates_rec_ctrl.keys())+list(def_dates_ongoing.keys()):
             table_data = table_data + [item for item in t_data if item[1]==key][:15]
 
+        self.set_header("Content-type", "application/json")
         self.write(json.dumps(table_data))
 
 
