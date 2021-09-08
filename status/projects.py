@@ -349,14 +349,14 @@ class ProjectsBaseDataHandler(SafeHandler):
             for key, value in def_dates_summary.items():
                 if key == 'days_seq_start':
 
-                    if 'Library, By user' in final_projects[proj_id].get('library_construction_method', '-'):
+                    if 'by user' in final_projects[proj_id].get('library_construction_method', '-').lower():
                         start_date = value[0][1]
                     else:
                         start_date = value[0][0]
                 else:
                     start_date = value[0]
                 end_date = value[1]
-                if key in ['days_prep', 'days_prep_start'] and 'Library, By user' in final_projects[proj_id].get('library_construction_method', '-'):
+                if key in ['days_prep', 'days_prep_start'] and 'by user' in final_projects[proj_id].get('library_construction_method', '-').lower():
                     final_projects[proj_id][key] = '-'
                 else:
                     final_projects[proj_id][key] = self._calculate_days_in_status(final_projects[proj_id].get(start_date),
