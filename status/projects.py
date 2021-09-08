@@ -1068,13 +1068,14 @@ class PrioProjectsTableHandler(SafeHandler):
         projects = {}
         def_dates_rec_ctrl = { 'days_recep_ctrl' : ['open_date', 'queued']
                              }
-        def_dates_ongoing = { 'days_analysis' : ['all_samples_sequenced', 'best_practice_analysis_completed'],
-                               'days_data_delivery' : ['best_practice_analysis_completed', 'all_raw_data_delivered'],
-                               'days_close' : ['all_raw_data_delivered', 'close_date'],
-                               'days_prep_start' : ['queued', 'library_prep_start'],
+        #dates in order
+        def_dates_ongoing = { 'days_prep_start' : ['queued', 'library_prep_start'],
+                               'days_prep' : ['library_prep_start', 'qc_library_finished'],
                                'days_seq_start' : [['qc_library_finished', 'queued'], 'sequencing_start_date'],
                                'days_seq' : ['sequencing_start_date', 'all_samples_sequenced'],
-                               'days_prep' : ['library_prep_start', 'qc_library_finished']
+                               'days_analysis' : ['all_samples_sequenced', 'best_practice_analysis_completed'],
+                               'days_data_delivery' : ['best_practice_analysis_completed', 'all_raw_data_delivered'],
+                               'days_close' : ['all_raw_data_delivered', 'close_date']
                              }
         date_fields = list(flatten(def_dates_ongoing.values()))
         statuses = ['ongoing', 'reception control']
@@ -1133,11 +1134,15 @@ class PrioProjectsTableHandler(SafeHandler):
                     del projects[k][k2]
 
         #Get list of projects with status and days containing only last status
-        table_data = [(k,k2,v2) for k,v in projects.items() for k2,v2 in v.items() if k2 in list(v.items())[-1]]
+        t_data = [(k,k2,v2) for k,v in projects.items() for k2,v2 in v.items() if k2 in list(v.items())[-1]]
         #Sort projects on number of days
-        table_data.sort(key=lambda x:x[2], reverse=True)
-        #Get top 15 projects
-        self.write(json.dumps(table_data[:15]))
+        t_data.sort(key=lambda x:(x[1], x[2]), reverse=True)
+        table_data = []
+        #Get top 15 projects in each status
+        for key in list(def_dates_rec_ctrl.keys())+list(def_dates_ongoing.keys()):
+            table_data = table_data + [item for item in t_data if item[1]==key][:15]
+
+        self.write(json.dumps(table_data))
 
 
     def _calculate_days_in_status(self, start_date, end_date):
