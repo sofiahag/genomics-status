@@ -63,6 +63,7 @@ from status.testing import TestDataHandler
 from status.util import BaseHandler, DataHandler, LastPSULRunHandler, MainHandler, \
     UpdatedDocumentsDatahandler
 from status.user_preferences import UserPrefPageHandler, UserPrefPageHandler_b5
+from status.vue_playground import Vue_PGHandler
 from status.worksets import WorksetHandler, WorksetsHandler, WorksetDataHandler, WorksetLinksHandler, WorksetNotesDataHandler, \
     WorksetsDataHandler, WorksetSearchHandler, ClosedWorksetsHandler
 
@@ -238,6 +239,7 @@ class Application(tornado.web.Application):
             ("/user_management", UserManagementHandler),
             ("/userpref", UserPrefPageHandler),
             ("/userpref_b5", UserPrefPageHandler_b5),
+            ("/vue_playground", Vue_PGHandler),
             ("/worksets", WorksetsHandler),
             ("/workset_queues", WorksetQueuesHandler),
             ("/workset/([^/]*)$", WorksetHandler),
@@ -397,6 +399,7 @@ class Application(tornado.web.Application):
             tornado.autoreload.watch("design/unauthorized.html")
             tornado.autoreload.watch("design/user_management.html")
             tornado.autoreload.watch("design/user_preferences.html")
+            tornado.autoreload.watch("design/vue_playground.html")
             tornado.autoreload.watch("design/workset_samples.html")
             tornado.autoreload.watch("design/worksets.html")
 
