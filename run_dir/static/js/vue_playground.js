@@ -21,12 +21,11 @@ app.component('v-playground', {
       </div>
       <div class="col-6">
         <div class="card" style="height:500px">
-          <div class="card-header mx-auto mt-3">
+          <div class="card-header" style="text-align:center">
             <h2>Vue Shopping Cart</h2>
           </div>
-          <hr>
           <div class="card-body">
-            <button type="button" v-on:click.prevent="increment" class="btn btn-primary btn-lg ml-5">Add 1 item to cart</button>
+            <button type="button" v-on:click.prevent="increment" class="btn btn-primary btn-lg ml-5 mt-5">Add 1 item to cart</button>
           </div>
         </div>
       </div>
