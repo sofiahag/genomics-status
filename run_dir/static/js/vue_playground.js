@@ -1,38 +1,16 @@
-//import './css/v_pg.css';
-
 const app = Vue.createApp();
 
 app.component('v-playground', {
   data: () => {
     return {
-      count_one: 0,
-      count_two: 0,
-      count_three: 0
+      item1: 0,
+      item2: 0,
+      item3: 0
     }
   },
   computed: {
     total() {
-      return parseInt(this.count_one) + parseInt(this.count_two) + parseInt(this.count_three);
-    }
-  },
-  methods: {
-    incr_one () {
-      this.count_one++;
-    },
-    decr_one () {
-      this.count_one--;
-    },
-    incr_two () {
-      this.count_two++;
-    },
-    decr_two () {
-      this.count_two--;
-    },
-    incr_three () {
-      this.count_three++;
-    },
-    decr_three () {
-      this.count_three--;
+      return this.item1 + this.item2 + this.item3;
     }
   },
   template:
@@ -49,13 +27,17 @@ app.component('v-playground', {
               <div class="col-4">
                 <div class="card mt-5 mr-5">
                   <div class="card-body">Item nr 1</div>
-                  <button type="button" v-on:click.prevent="incr_one" class="btn btn-primary">Add</button>
+                  <div style="text-align:right">
+                    <button type="button" v-on:click="item1++" class="btn btn-primary" style="width:40%;">Add</button>
+                  </div>
                 </div>
               </div>
               <div class="col-4">
                 <div class="card mt-5 ml-5">
                   <div class="card-body">Item nr 2</div>
-                  <button type="button" v-on:click.prevent="incr_two" class="btn btn-primary">Add</button>
+                  <div style="text-align:right">
+                    <button type="button" v-on:click="item2++" class="btn btn-primary" style="width:40%">Add</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -63,7 +45,9 @@ app.component('v-playground', {
               <div class="col-4">
                 <div class="card mt-5 mr-5">
                   <div class="card-body">Item nr 3</div>
-                  <button type="button" v-on:click.prevent="incr_three" class="btn btn-primary">Add</button>
+                  <div style="text-align:right">
+                    <button type="button" v-on:click="item3++" class="btn btn-primary" style="width:40%">Add</button>
+                  </div>
                 </div>
               </div>
               <div class="col-4"></div>
@@ -76,9 +60,9 @@ app.component('v-playground', {
           <div class="card-body">
             <p class="mt-4 ml-1">You have {{ total }} items in your cart</p>
             <p class="mt-5 ml-1">Items:</p>
-            <p class="mt-4 ml-1">Item nr 1................{{ count_one }} <button v-on:click.prevent="decr_one">x</button></p>
-            <p class="mt-1 ml-1">Item nr 2................{{ count_two }} <button v-on:click.prevent="decr_two">x</button></p>
-            <p class="mt-1 ml-1">Item nr 3................{{ count_three }} <button v-on:click.prevent="decr_three">x</button></p>
+            <p class="mt-4 ml-1">Item nr 1................{{ item1 }} <button v-on:click="item1--">x</button></p>
+            <p class="mt-1 ml-1">Item nr 2................{{ item2 }} <button v-on:click="item2--">x</button></p>
+            <p class="mt-1 ml-1">Item nr 3................{{ item3 }} <button v-on:click="item3--">x</button></p>
           </div>
         </div>
       </div>
