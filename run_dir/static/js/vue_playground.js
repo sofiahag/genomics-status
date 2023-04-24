@@ -25,13 +25,8 @@ const app = Vue.createApp({
   }
 });
 
-app.component('v-playground', {
+app.component('v-inventory', {
   props: ['items'],
-  computed: {
-    total() {
-      return this.$root.items.itemid1.count + this.$root.items.itemid2.count + this.$root.items.itemid3.count
-    }
-  },
   template:
   /*html*/`
   <div class="container">
@@ -56,20 +51,33 @@ app.component('v-playground', {
         </div>
       </div>
       <div class="col-2">
-        <div class="card" style="height:350px">
-          <div class="card-header" style="text-align:center">
-            <h2>Cart</h2>
-          </div>
-          <div class="card-body">
-            <p class="mt-4 ml-1">You have <b>{{ total }}</b> items in your cart</p>
-            <p class="mt-5 ml-1"><b>Items:</b></p>
-            <div v-for="item in this.$root.items">
-              <p v-if="!item.hide" class="mt-4 ml-1">{{ item.name }} .............. <b>{{ item.count }}</b>
-                <button class="ml-2" v-on:click="item.hide=true;item.count=0">x</button>
-              </p>
-            </div>
-          </div>
-        </div>
+        <v-cart/>
+      </div>
+    </div>
+  </div>
+  `
+})
+
+app.component('v-cart', {
+  props: ['items'],
+  computed: {
+    total() {
+      return this.$root.items.itemid1.count + this.$root.items.itemid2.count + this.$root.items.itemid3.count
+    }
+  },
+  template:
+  /*html*/`
+  <div class="card" style="height:350px">
+    <div class="card-header" style="text-align:center">
+      <h2>Cart</h2>
+    </div>
+    <div class="card-body">
+      <p class="mt-4 ml-1">You have <b>{{ total }}</b> items in your cart</p>
+      <p class="mt-5 ml-1"><b>Items:</b></p>
+      <div v-for="item in this.$root.items">
+        <p v-if="!item.hide" class="mt-4 ml-1">{{ item.name }} .............. <b>{{ item.count }}</b>
+          <button class="ml-2" v-on:click="item.hide=true;item.count=0">x</button>
+        </p>
       </div>
     </div>
   </div>
