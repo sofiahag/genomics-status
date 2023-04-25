@@ -25,30 +25,13 @@ const app = Vue.createApp({
   }
 });
 
-app.component('v-inventory', {
-  props: ['items'],
+app.component('v-playground', {
   template:
   /*html*/`
   <div class="container">
     <div class="row justify-content-center my-5">
       <div class="col-6">
-        <div class="card" style="height:500px">
-          <div class="card-header" style="text-align:center">
-           <h2>Inventory</h2>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div v-for="item in this.$root.items" class="col-4">
-                <div class="card mt-5">
-                  <div class="card-body">{{ item.name }}</div>
-                  <div style="text-align:right">
-                    <button type="button" v-on:click="item.count++;item.hide=false" class="btn btn-primary" style="width:40%;">Add</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <v-inventory/>
       </div>
       <div class="col-2">
         <v-cart/>
@@ -57,6 +40,31 @@ app.component('v-inventory', {
   </div>
   `
 })
+
+app.component('v-inventory', {
+  props: ['items'],
+  template:
+  /*html*/`
+  <div class="card" style="height:500px">
+    <div class="card-header" style="text-align:center">
+      <h2>Inventory</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div v-for="item in this.$root.items" class="col-4">
+          <div class="card mt-5">
+            <div class="card-body">{{ item.name }}</div>
+            <div style="text-align:right">
+              <button type="button" v-on:click="item.count++;item.hide=false" class="btn btn-primary" style="width:40%;">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `
+  })
+
 
 app.component('v-cart', {
   props: ['items'],
